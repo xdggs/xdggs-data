@@ -1,14 +1,14 @@
 import pathlib
-import xarray as xr
-import xdggs
-from xdggs.healpix import HealpixInfo
-from xdggs.h3 import H3Info
 
-import numpy as np
-import healpy as hp
-import xvec
-import shapely
 import h3ronpy.arrow
+import numpy as np
+import shapely
+import xarray as xr
+import xvec  # noqa: F401
+
+import xdggs
+from xdggs.h3 import H3Info
+from xdggs.healpix import HealpixInfo
 
 
 def derive_bbox(ds, center_meridian=180):
