@@ -68,9 +68,15 @@ def interpolate_to_h3(ds, grid_info):
         .pipe(lambda ds: ds.merge(ds.dggs.cell_centers()))
     )
 
-    return ds.interp(
-        lon=grid["longitude"].variable, lat=grid["latitude"].variable, method="linear"
-    ).assign_coords(cell_ids=grid["cell_ids"].variable)
+    return (
+        ds.assign_coords(lon=lambda ds: -((-ds["lon"] + 180) % 360 - 180))
+        .interp(
+            lon=grid["longitude"].variable,
+            lat=grid["latitude"].variable,
+            method="linear",
+        )
+        .assign_coords(cell_ids=grid["cell_ids"].variable)
+    )
 
 
 if __name__ == "__main__":
