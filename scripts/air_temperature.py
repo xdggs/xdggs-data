@@ -31,7 +31,7 @@ def interpolate_to_healpix(ds, grid_info):
             coords={
                 "cell_ids": (
                     "cells",
-                    np.arange(12 * 4**grid_info.resolution),
+                    np.arange(12 * 4**grid_info.level),
                     grid_info.to_dict(),
                 )
             }
@@ -59,7 +59,7 @@ def interpolate_to_h3(ds, grid_info):
 
     cell_ids = h3ronpy.arrow.vector.geometry_to_cells(
         bbox,
-        resolution=grid_info.resolution,
+        resolution=grid_info.level,
         containment_mode=h3ronpy.ContainmentMode.ContainsBoundary,
     )
     grid = (
@@ -85,10 +85,10 @@ if __name__ == "__main__":
     root = pathlib.Path.cwd() / "air_temperature"
     root.mkdir(exist_ok=True)
 
-    healpix_info = HealpixInfo(resolution=4, indexing_scheme="nested")
+    healpix_info = HealpixInfo(level=4, indexing_scheme="nested")
     healpix_ds = interpolate_to_healpix(ds, healpix_info)
     healpix_ds.to_netcdf(root / "healpix.nc", mode="w")
 
-    h3_info = H3Info(resolution=2)
+    h3_info = H3Info(level=2)
     h3_ds = interpolate_to_h3(ds, h3_info)
     h3_ds.to_netcdf(root / "h3.nc", mode="w")
